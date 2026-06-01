@@ -1,0 +1,106 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/MatchHUD.gd" id="1_36jyf"]
+[ext_resource type="Script" path="res://scripts/ChargeArcDraw.gd" id="2_iqghc"]
+
+[node name="MatchHUD" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_36jyf")
+
+[node name="Score" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_right = 100.0
+offset_top = 10.0
+offset_bottom = 60.0
+grow_horizontal = 2
+
+[node name="Team0" type="Label" parent="Score"]
+layout_mode = 0
+offset_left = 0.0
+offset_right = 70.0
+offset_top = 0.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0.2, 0.4, 1.0, 1)
+theme_override_font_sizes/font_size = 36
+text = "0"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="Score"]
+layout_mode = 0
+offset_left = 75.0
+offset_right = 125.0
+offset_top = 8.0
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 22
+text = "VS"
+horizontal_alignment = 1
+
+[node name="Team1" type="Label" parent="Score"]
+layout_mode = 0
+offset_left = 130.0
+offset_right = 200.0
+offset_top = 0.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(1.0, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 36
+text = "0"
+horizontal_alignment = 1
+
+[node name="Timer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 1
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 120.0
+offset_bottom = 46.0
+
+[node name="Label" type="Label" parent="Timer"]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 36.0
+theme_override_font_sizes/font_size = 28
+text = "3:00"
+
+[node name="JuggleCounter" type="Label" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -150.0
+offset_top = 60.0
+offset_right = -20.0
+offset_bottom = 100.0
+theme_override_font_sizes/font_size = 32
+text = "x0"
+horizontal_alignment = 2
+
+[node name="PowerVolleyReady" type="Label" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -180.0
+offset_top = 105.0
+offset_right = -20.0
+offset_bottom = 140.0
+theme_override_colors/font_color = Color(1.0, 0.85, 0.0, 1)
+theme_override_font_sizes/font_size = 26
+text = "POWER VOLLEY"
+horizontal_alignment = 2
+
+[node name="ChargeArc" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_iqghc")

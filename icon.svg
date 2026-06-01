@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128">
+  <rect width="128" height="128" fill="#1a1a2e"/>
+  <circle cx="64" cy="64" r="32" fill="white" stroke="#333" stroke-width="2"/>
+  <text x="64" y="100" text-anchor="middle" font-size="24" fill="#e0e0e0" font-family="sans-serif">S3</text>
+</svg>
