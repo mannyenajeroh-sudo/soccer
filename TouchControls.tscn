@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://touch001"]
+
+[ext_resource type="Script" path="res://scripts/TouchControls.gd" id="1_touch"]
+[ext_resource type="Script" path="res://scripts/VirtualJoystick.gd" id="2_joystick"]
+
+[node name="TouchControls" type="CanvasLayer"]
+script = ExtResource("1_touch")
+
+[node name="LeftStick" type="Control" parent="."]
+script = ExtResource("2_joystick")
+
+[node name="BaseRing" type="Control" parent="LeftStick"]
+
+[node name="Knob" type="Control" parent="LeftStick"]
+
+[node name="RightButtons" type="Control" parent="."]
+
+[node name="ShootBtn" type="Button" parent="RightButtons"]
+text = "SHOOT"
+
+[node name="PassBtn" type="Button" parent="RightButtons"]
+text = "PASS"
+
+[node name="SprintBtn" type="Button" parent="RightButtons"]
+text = "SPRINT"

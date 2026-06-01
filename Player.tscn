@@ -1,0 +1,57 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/PlayerController.gd" id="1_70d11"]
+[ext_resource type="Script" path="res://scripts/DribbleSystem.gd" id="2_cw2d6"]
+[ext_resource type="Script" path="res://scripts/KickSystem.gd" id="3_khinc"]
+[ext_resource type="Script" path="res://scripts/TackleSystem.gd" id="4_bruh7"]
+[ext_resource type="Script" path="res://scripts/SkillMoves.gd" id="5_6eyey"]
+[ext_resource type="Script" path="res://scripts/AerialMechanics.gd" id="6_d3wef"]
+[ext_resource type="Script" path="res://scripts/JuggleSystem.gd" id="8_jgl"]
+[ext_resource type="Script" path="res://scripts/PlayerVisuals.gd" id="7_vis"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_o4126"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_lkdrv"]
+radius = 0.35
+height = 1.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p7iby"]
+albedo_color = Color(0.050980393, 0.06666667, 1, 1)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_70d11")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_o4126")
+
+[node name="FacingPivot" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FacingPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_lkdrv")
+surface_material_override/0 = SubResource("StandardMaterial3D_p7iby")
+visible = false
+
+[node name="PlayerVisuals" type="Node3D" parent="."]
+script = ExtResource("7_vis")
+
+[node name="DribbleSystem" type="Node" parent="."]
+script = ExtResource("2_cw2d6")
+
+[node name="KickSystem" type="Node" parent="."]
+script = ExtResource("3_khinc")
+
+[node name="TackleSystem" type="Node" parent="."]
+script = ExtResource("4_bruh7")
+
+[node name="SkillMoves" type="Node" parent="."]
+script = ExtResource("5_6eyey")
+
+[node name="AerialMechanics" type="Node" parent="."]
+script = ExtResource("6_d3wef")
+
+[node name="JuggleSystem" type="Node" parent="."]
+script = ExtResource("8_jgl")

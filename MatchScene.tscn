@@ -1,0 +1,208 @@
+[gd_scene load_steps=24 format=3 uid="uid://match001"]
+
+[ext_resource type="Script" uid="uid://bbebsvvc4w3o7" path="res://scripts/MatchManager.gd" id="1_ms8ik"]
+[ext_resource type="Script" uid="uid://bblt1rlc4xpo7" path="res://scripts/BallPhysics.gd" id="1_yeg4s"]
+[ext_resource type="Script" uid="uid://b8afuiu8clned" path="res://scripts/BallShadow.gd" id="2_qhorq"]
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="2_rb7hi"]
+[ext_resource type="Script" uid="uid://cejvus5jsud21" path="res://scripts/BallVisuals.gd" id="3_ms8ik"]
+[ext_resource type="Script" uid="uid://b4iryqhdlkqtp" path="res://scripts/CameraRig.gd" id="4_rb7hi"]
+[ext_resource type="PackedScene" path="res://MatchHUD.tscn" id="7_rb7hi"]
+[ext_resource type="Script" path="res://scripts/NetDeformer.gd" id="9_net"]
+[ext_resource type="PackedScene" uid="uid://jy5aqmp60myj" path="res://GoalCelebration.tscn" id="8_goal"]
+
+[sub_resource type="Environment" id="Environment_bfaoq"]
+background_mode = 1
+background_color = Color(0.529, 0.671, 0.878, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.85, 0.9, 1, 1)
+ambient_light_energy = 0.6
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1gshr"]
+size = Vector2(25, 20)
+
+[sub_resource type="StandardMaterial3D" id="Mat_grass"]
+albedo_color = Color(0.13, 0.52, 0.13, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(27, 0.2, 22)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wallLR"]
+size = Vector3(0.5, 4, 24)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wallFB"]
+size = Vector3(27, 4, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_goal"]
+size = Vector3(5.8, 2.0, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_post"]
+size = Vector3(0.15, 2.0, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="Mat_post"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_bar"]
+size = Vector3(5.8, 0.15, 0.15)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ball"]
+radius = 0.11
+height = 0.22
+
+[sub_resource type="StandardMaterial3D" id="Mat_ball"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_shadow"]
+top_radius = 0.22
+bottom_radius = 0.22
+height = 0.01
+radial_segments = 16
+
+[node name="MatchScene" type="Node3D" node_paths=PackedStringArray("ball_physics", "camera_rig", "_hud")]
+script = ExtResource("1_ms8ik")
+player_scene = ExtResource("2_rb7hi")
+ball_physics = NodePath("Ball")
+camera_rig = NodePath("CameraRig")
+_hud = NodePath("MatchHUD")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_bfaoq")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.433, 0.25, 0, 0.5, 0.866, -0.5, -0.75, 0.433, 0, 20, 10)
+light_energy = 1.2
+shadow_enabled = true
+
+[node name="Pitch" type="StaticBody3D" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="Pitch"]
+transform = Transform3D(0.9999968, 0.002548178, 0, -0.002548178, 0.9999968, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_1gshr")
+surface_material_override/0 = SubResource("Mat_grass")
+
+[node name="GroundCollision" type="CollisionShape3D" parent="Pitch"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_ground")
+
+[node name="WallL" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 2, 0)
+
+[node name="Col" type="CollisionShape3D" parent="WallL"]
+shape = SubResource("BoxShape3D_wallLR")
+
+[node name="WallR" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 2, 0)
+
+[node name="Col" type="CollisionShape3D" parent="WallR"]
+shape = SubResource("BoxShape3D_wallLR")
+
+[node name="WallN" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -10.25)
+
+[node name="Col" type="CollisionShape3D" parent="WallN"]
+shape = SubResource("BoxShape3D_wallFB")
+
+[node name="WallF" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 10.25)
+
+[node name="Col" type="CollisionShape3D" parent="WallF"]
+shape = SubResource("BoxShape3D_wallFB")
+
+[node name="GoalA" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+
+[node name="GoalTriggerA" type="Area3D" parent="GoalA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, -0.25)
+collision_layer = 2
+
+[node name="GoalCollisionA" type="CollisionShape3D" parent="GoalA/GoalTriggerA"]
+shape = SubResource("BoxShape3D_goal")
+
+[node name="LeftPost" type="MeshInstance3D" parent="GoalA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9, 1.0, 0)
+mesh = SubResource("BoxMesh_post")
+surface_material_override/0 = SubResource("Mat_post")
+
+[node name="RightPost" type="MeshInstance3D" parent="GoalA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9, 1.0, 0)
+mesh = SubResource("BoxMesh_post")
+surface_material_override/0 = SubResource("Mat_post")
+
+[node name="Crossbar" type="MeshInstance3D" parent="GoalA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
+mesh = SubResource("BoxMesh_bar")
+surface_material_override/0 = SubResource("Mat_post")
+
+[node name="Net" type="MeshInstance3D" parent="GoalA" node_paths=PackedStringArray("ball_physics")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
+script = ExtResource("9_net")
+ball_physics = NodePath("../../Ball")
+is_team_a = true
+goal_half_width = 2.9
+goal_height = 2.0
+net_depth = 1.1
+
+
+[node name="GoalB" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+
+[node name="GoalTriggerB" type="Area3D" parent="GoalB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0.25)
+collision_layer = 2
+
+[node name="GoalCollisionB" type="CollisionShape3D" parent="GoalB/GoalTriggerB"]
+shape = SubResource("BoxShape3D_goal")
+
+[node name="LeftPost" type="MeshInstance3D" parent="GoalB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9, 1.0, 0)
+mesh = SubResource("BoxMesh_post")
+surface_material_override/0 = SubResource("Mat_post")
+
+[node name="RightPost" type="MeshInstance3D" parent="GoalB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9, 1.0, 0)
+mesh = SubResource("BoxMesh_post")
+surface_material_override/0 = SubResource("Mat_post")
+
+[node name="Crossbar" type="MeshInstance3D" parent="GoalB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
+mesh = SubResource("BoxMesh_bar")
+surface_material_override/0 = SubResource("Mat_post")
+
+[node name="Net" type="MeshInstance3D" parent="GoalB" node_paths=PackedStringArray("ball_physics")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
+script = ExtResource("9_net")
+ball_physics = NodePath("../../Ball")
+is_team_a = false
+goal_half_width = 2.9
+goal_height = 2.0
+net_depth = 1.1
+
+
+[node name="Ball" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11, 0)
+script = ExtResource("1_yeg4s")
+
+[node name="BallMesh" type="MeshInstance3D" parent="Ball"]
+mesh = SubResource("SphereMesh_ball")
+surface_material_override/0 = SubResource("Mat_ball")
+
+[node name="BallShadow" type="MeshInstance3D" parent="." node_paths=PackedStringArray("ball")]
+mesh = SubResource("CylinderMesh_shadow")
+script = ExtResource("2_qhorq")
+ball = NodePath("../Ball")
+
+[node name="BallVisuals" type="Node3D" parent="." node_paths=PackedStringArray("ball_physics", "ball_mesh")]
+script = ExtResource("3_ms8ik")
+ball_physics = NodePath("../Ball")
+ball_mesh = NodePath("../Ball/BallMesh")
+
+[node name="CameraRig" type="Node3D" parent="."]
+script = ExtResource("4_rb7hi")
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+environment = SubResource("Environment_bfaoq")
+current = true
+fov = 58.0
+near = 0.1
+far = 300.0
+
+[node name="MatchHUD" parent="." instance=ExtResource("7_rb7hi")]
+
+[node name="GoalCelebration" parent="." instance=ExtResource("8_goal")]

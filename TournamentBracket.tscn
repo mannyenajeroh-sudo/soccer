@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://4a3c77b1"]
+
+[ext_resource type="Script" path="res://scripts/menus/TournamentBracket.gd" id="1_4a3c77b1"]
+
+[node name="TournamentBracket" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_4a3c77b1")
